@@ -4,10 +4,13 @@ import controladores.Inicio;
 import dtos.ClienteDto;
 
 public class ClienteImplementacion {
-	ClienteDto nuevoCliente = new ClienteDto();
 	
 	public void registroCliente() {
-	
+	ClienteDto nuevoCliente = new ClienteDto();
+
+		long id = generarNuevoId();
+        nuevoCliente.setId(id);
+		
 System.out.println("Introduzca su nombre completo de tal forma: nombre-apellido1-apellido2");
 nuevoCliente.setNombreCompleto(Inicio.sc.next());
 
@@ -46,8 +49,12 @@ String[] nombreSeparado = nuevoCliente.getNombreCompleto().split("-");
 
  
  Inicio.listaClientes.add(nuevoCliente);
-System.out.println("Usuario registrado exitosamente");	 
+System.out.prinrln("Usuario registrado exitosamente");	 
  
  
 	}
+	private int generarNuevoId() {
+        Inicio.ultimoIdCliente++;
+        return Inicio.ultimoIdCliente;
+    }
 }
