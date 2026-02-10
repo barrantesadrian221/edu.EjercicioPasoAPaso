@@ -11,7 +11,7 @@ public class SubMenuEmpleado implements MenuInterfaz {
 		System.out.println("---------");
 		System.out.println("0.Volver al Menu");
 		System.out.println("1.Validar Cliente");
-		System.out.println("2.Borrar cliente");
+		System.out.println("2.Borrar cliente(listar prueba)");
 		System.out.println("3.Mostrar cliente");
 		System.out.println("---------");
 	
@@ -31,6 +31,7 @@ public class SubMenuEmpleado implements MenuInterfaz {
 	
 	public void accionarMenuEmpleado() {
 		
+		EmpleadoImplementacion ei = new EmpleadoImplementacion();
 		boolean esCerradoSubEm = false;
 		byte opcionEm;
 		
@@ -46,11 +47,12 @@ public class SubMenuEmpleado implements MenuInterfaz {
 			break;
 			
 		case 1:
-			System.out.println("CASO 1 SUB");
+			ei.validarCliente();
+			esCerradoSubEm = true;  
 			break;
 			
 		case 2:
-			System.out.println("CASO 2 SUB");
+			ei.listarIdPrueba();
 		break;
 		
 		case 3:

@@ -70,7 +70,7 @@ public class ClienteDto {
 	}
 	@Override
 	public String toString() {
-		return " DNI: " + dni + "\n"+ "NOMBRE: " + nombreCompleto +"\n"+ "ESTADO VALIDACION: " + ((esValidado = true) ? "si" : "no") +"\n"+"%%%%%%%%%%";
+		return"Id: "+ id+" DNI: " + dni + "\n"+ "NOMBRE: " + nombreCompleto +"\n"+ "ESTADO VALIDACION: " + ((esValidado = false) ? "si" : "no") +"\n"+"%%%%%%%%%%";
 	}
 	
 	
