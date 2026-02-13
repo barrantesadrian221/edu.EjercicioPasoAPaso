@@ -52,11 +52,11 @@ public class SubMenuEmpleado implements MenuInterfaz {
 			break;
 			
 		case 2:
-			ei.listarIdPrueba();
+		ei.borrarCliente();
 		break;
 		
 		case 3:
-			System.out.println("CASO 3 SUB");
+			ei.mostrarClientes();
 		break;
 		
 		default:

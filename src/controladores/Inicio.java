@@ -10,8 +10,8 @@ import servicios.SubMenuEmpleado;
 
 public class Inicio {
 	public static Scanner sc = new Scanner(System.in);
-	public static ArrayList <ClienteDto>listaClientes = new ArrayList();
-	public static int ultimoIdCliente = 0;
+	public static ArrayList <ClienteDto>listaClientes = new ArrayList<>();
+
 
 
 	public static void main(String[] args) {

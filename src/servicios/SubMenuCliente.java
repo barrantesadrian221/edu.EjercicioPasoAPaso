@@ -51,13 +51,9 @@ public class SubMenuCliente implements MenuInterfaz {
 			break;
 			
 		case 2:
-			System.out.println("CASO 2 SUB");
+			ci.accederCliente();
 		break;
-		
-		case 3:
-			System.out.println("CASO 3 SUB");
-		break;
-		
+	
 		default:
 			System.out.println("Opcion no validation");
 			break;
