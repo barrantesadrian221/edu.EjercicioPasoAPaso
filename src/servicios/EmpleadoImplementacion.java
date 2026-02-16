@@ -41,8 +41,36 @@ public class EmpleadoImplementacion {
 	}
 
 	
-	public void borrarCliente() {}
-public void mostrarClientes(){}
+	public void borrarCliente() {
+		ClienteDto cAux = new ClienteDto();
+		boolean Borrado = false;
+		System.out.println("Introduzca el dni de la persona a eliminar");
+		String dni = Inicio.sc.next();
+		do {
+		for(ClienteDto c : Inicio.listaClientes) {
+			c.getDni();
+			if(c.getDni()!=dni){
+				System.out.println("No va eso no se encuentra dni");
+				return;
+			}
+			
+			else if(c.isEsValidado()==false) {
+				System.out.println("No valido, validar dni");
+				
+			}
+			
+			else {
+				System.out.println("Todo pasado");
+				cAux=c;
+			}
+		}
+		Inicio.listaClientes.remove(cAux);
+		System.out.println("Usuario "+cAux.getNombre()+" borrado exitosamente");
+		
+		}while(!Borrado);
+	}
+public void mostrarClientes(){
+}
 }
 	    
 	    
