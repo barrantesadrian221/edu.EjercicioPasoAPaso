@@ -52,6 +52,7 @@ public class SubMenuCliente implements MenuInterfaz {
 			
 		case 2:
 			ci.accederCliente();
+			esCerradoSubCl = true;
 		break;
 	
 		default:

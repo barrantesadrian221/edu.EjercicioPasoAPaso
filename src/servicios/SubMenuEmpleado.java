@@ -53,6 +53,7 @@ public class SubMenuEmpleado implements MenuInterfaz {
 			
 		case 2:
 		ei.borrarCliente();
+		esCerradoSubEm = true;
 		break;
 		
 		case 3:
