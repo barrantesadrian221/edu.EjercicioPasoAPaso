@@ -53,7 +53,7 @@ public class Inicio {
 		
 		
 		
-		
+		sc.close();
 	}
 
 }

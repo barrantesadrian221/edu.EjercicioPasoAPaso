@@ -38,7 +38,6 @@ public class ClienteImplementacion {
 		nuevoCliente.setApellido1(apellido1);
 		String apellido2 = nombreSeparado[2];
 		nuevoCliente.setApellido2(apellido2);
-		boolean dniEsCorrecto = false;
 
 		nuevoCliente.setEsValidado(false);
 
@@ -55,6 +54,20 @@ public class ClienteImplementacion {
 			return;
 		}
 
+		boolean dniEsCorrecto = false;
+		do {
+			
+			System.out.println("Introduzca su dni de esta forma: 12345678-X");
+			String dniCompleto = Inicio.sc.next();
+
+			if (validacionDni(dniCompleto)) {
+				dniEsCorrecto = true;
+				nuevoCliente.setDni(dniCompleto);
+			} else {
+				System.out.println("DNI Incorrecto");
+			}
+		} while (!dniEsCorrecto);
+
 		// Validar contraseña
 		System.out.println("Introduzca su contraseña");
 		String contraseña1 = Inicio.sc.next();
@@ -65,21 +78,20 @@ public class ClienteImplementacion {
 			nuevoCliente.setContrasenia(contraseña2);
 		} else {
 			System.out.println("no es igual");
+			return;
 		}
-//Asegurarse de que el dni es correcto 
-		extracted(nuevoCliente, dniEsCorrecto);
-
 		// Añadir cliente
 		Inicio.listaClientes.add(nuevoCliente);
 		System.out.println("Usuario registrado exitosamente");
 
 	}
 
-	private void extracted(ClienteDto nuevoCliente, boolean dniEsCorrecto) {
-		do {
-			System.out.println("Introduzca su dni de esta forma: 12345678-X");
-			String dniCompleto = Inicio.sc.next();
-
+	// Asegurarse de que el dni es correcto
+	public static boolean validacionDni(String dniCompleto) {
+		boolean dniEsCorrecto = false;
+		if (!dniCompleto.matches("^[0-9]{8}-[A-Z]$")) {
+			return false;
+		}
 			String[] catalogo = { "T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q",
 					"V", "H", "L", "C", "K", "E" };
 
@@ -92,15 +104,10 @@ public class ClienteImplementacion {
 
 			if (dniLetra.equalsIgnoreCase(letraCorrecta)) {
 				System.out.println("DNI correcto");
-				nuevoCliente.setDni(dniCompleto);
 				dniEsCorrecto = true;
 
-			} else {
-				System.out.println("DNI INCORRECTO. La letra no corresponde. Inténtelo de nuevo.");
-
 			}
-
-		} while (!dniEsCorrecto);
+		return dniEsCorrecto;
 	}
 
 	public void accederCliente() {
@@ -114,6 +121,9 @@ public class ClienteImplementacion {
 			String contrasenia = Inicio.sc.next();
 
 			for (ClienteDto c : Inicio.listaClientes) {
+				if(c.getEmail().isEmpty()) {
+					System.out.println("No existe ningun usuario");
+				}
 				if (c.getContrasenia().equals(contrasenia) && c.getEmail().equals(email)) {
 					System.out.println("Campos correctos");
 					if (c.isEsValidado() == true) {
@@ -131,8 +141,7 @@ public class ClienteImplementacion {
 					if (attemps == 3) {
 						System.out.println("Intentos maximos alcanzados");
 						return;
-						
-						
+
 					}
 
 				}

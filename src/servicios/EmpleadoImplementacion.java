@@ -5,7 +5,7 @@ import dtos.ClienteDto;
 
 public class EmpleadoImplementacion {
 
-	/*
+	/**
 	 * Metodo que hace la funcion de listar los usuarios no validados y validarlos
 	 * mediante DNI
 	 */
@@ -40,21 +40,29 @@ public class EmpleadoImplementacion {
 	public void borrarCliente() {
 		ClienteDto cAux = new ClienteDto();
 		boolean Borrado = false;
-		System.out.println("Introduzca el dni de la persona a eliminar");
-		String dni = Inicio.sc.next();
+		
+		
+		
+		
+		
+		
+		
 		do {
+			System.out.println("Introduzca el dni de la persona a eliminar");
+			String dni = Inicio.sc.next();
+			if(ClienteImplementacion.validacionDni(dni)) {
 			for (ClienteDto c : Inicio.listaClientes) {
 				c.getDni();
 				if (c.getDni().equals(dni)) {
 					System.out.println("Todo pasado");
 					cAux = c;
-					break;
 				}
-			}
-
+				break;}
+			Borrado = true;
+			
 			if (!cAux.getDni().equals(dni)) {
 				System.out.println("Error: No se encuentra ningún cliente con ese DNI.");
-				return;
+				
 			} else if (!cAux.isEsValidado()) {
 				System.out.println("No se puede borrar: El usuario no está validado.");
 			} else {
@@ -62,7 +70,7 @@ public class EmpleadoImplementacion {
 				System.out.println("Usuario " + cAux.getNombre() + " borrado exitosamente.");
 				return;
 			}
-
+			}
 		} while (!Borrado);
 
 	}
