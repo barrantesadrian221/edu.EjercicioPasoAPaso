@@ -65,6 +65,10 @@ public class SubMenuEmpleado implements MenuInterfaz {
 			ei.asignarRol();
 			break;
 		
+			
+		case 5:
+			ei.listarEmpleadoPrueba();
+			break;
 		default:
 			System.out.println("Opcion no validation");
 			break;

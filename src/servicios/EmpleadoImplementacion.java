@@ -12,6 +12,24 @@ public class EmpleadoImplementacion {
 	
 	
 	public void entrarEmpleado() {
+		System.out.println("Introduzca su contraseña");
+		String contra = Inicio.sc.next();
+		ClienteDto ceAux = new ClienteDto();
+		for (ClienteDto ce : Inicio.listaEmpleado) {
+			if(contra.equals(ce.getContrasenia())) {
+				ceAux = ce;
+				break;
+			}else {
+				System.out.println("Usted no es un empleado");
+			}
+		}
+
+		if(ceAux.isEsEmpleado()) {
+			System.out.println("Bienvenido "+ ceAux.getNombre());
+		}else {System.out.println("No es un empleado");
+		return;}
+	
+	
 	}
 	    
 	public void validarCliente() {
@@ -97,19 +115,39 @@ public class EmpleadoImplementacion {
 	 * Metodo que asigna el rol de algun usuario
 	 */
 	public void asignarRol() {
-		System.out.println("Introduzca su contraseña");
-		String cRol = Inicio.sc.next();
-		System.out.println("Introduzca su dni");
-		String dniRol = Inicio.sc.next();
-		for (ClienteDto c : Inicio.listaClientes) {
-			if(cRol.equals(c.getContrasenia()) && dniRol.equals(c.getDni())) {
-				if(c.isEsEmpleado()) {
-					System.out.println("Hola " +c.getNombre()+" diga a que usuario desea asignar rol");
-					System.out.println(c.toString());
+		boolean cerrarAsignar = false;
+		ClienteDto cAux = new ClienteDto();
+		do {
+			for ( ClienteDto cc : Inicio.listaClientes) {
+				System.out.println("LISTA CLIENTES");
+				System.out.println(cc.toString());
+				System.out.println("Introduzca el dni del que quiere cambiar de rol");
+				String dni = Inicio.sc.next();
+				if(dni.equals(cc.getDni())) {
+					Inicio.listaClientes.remove(cc);
+					cc.setEsEmpleado(true);
+					Inicio.listaEmpleado.add(cc);
+					System.out.println("Usuario cambiado correctamente");
+					cerrarAsignar=true;
+					
+					break;
+					
+				}else {
+					System.out.println("No se encontro a dicha persona");
+					cerrarAsignar=true;	
 				}
+				
 			}
-				System.out.println(c.toString());
-			}
+			
+		}while(!cerrarAsignar);
+	 
+	}
+	
+	public void listarEmpleadoPrueba() {
+		for(ClienteDto ce : Inicio.listaEmpleado) {
+			System.out.println(ce.toString());
+		}
+		
 	}
 	
 	
