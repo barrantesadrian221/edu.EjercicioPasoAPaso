@@ -11,8 +11,21 @@ public class ClienteDto {
 	private String email;
 	private String contrasenia;
 	private boolean esValidado;
+	private String rol;
+	private boolean esEmpleado;
 	
-	
+	public boolean isEsEmpleado() {
+		return esEmpleado;
+	}
+	public void setEsEmpleado(boolean esEmpleado) {
+		this.esEmpleado = esEmpleado;
+	}
+	public String getRol() {
+		return rol;
+	}
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
 	private long id;
 	public long getId() {
 		return id;

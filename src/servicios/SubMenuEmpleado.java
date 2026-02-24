@@ -11,8 +11,9 @@ public class SubMenuEmpleado implements MenuInterfaz {
 		System.out.println("---------");
 		System.out.println("0.Volver al Menu");
 		System.out.println("1.Validar Cliente");
-		System.out.println("2.Borrar cliente(listar prueba)");
+		System.out.println("2.Borrar cliente");
 		System.out.println("3.Mostrar cliente");
+		System.out.println("4.Asignar Usuario");
 		System.out.println("---------");
 	
 	}
@@ -59,6 +60,10 @@ public class SubMenuEmpleado implements MenuInterfaz {
 		case 3:
 			ei.mostrarClientes();
 		break;
+		
+		case 4:
+			ei.asignarRol();
+			break;
 		
 		default:
 			System.out.println("Opcion no validation");

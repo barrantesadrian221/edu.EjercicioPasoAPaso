@@ -11,6 +11,19 @@ public class ClienteImplementacion {
 	 * Metodo que registra al cliente
 	 */
 
+	ClienteDto elBoss = new ClienteDto();
+public void codigoBoss() {	
+	elBoss.setNombreCompleto("Juan-Juanito-Juarez");
+	elBoss.setNombre("Juan");
+	elBoss.setApellido1("Juanito");
+	elBoss.setApellido2("Juarez");
+	elBoss.setContrasenia("impre");
+	elBoss.setDni("63620204-L");
+	elBoss.setEsEmpleado(true);
+	elBoss.setEsValidado(true);
+	elBoss.setEmail("@@.com");
+	Inicio.listaEmpleado.add(elBoss);
+}
 	private long generarId() {
 		long generarId = 0;
 
@@ -121,9 +134,6 @@ public class ClienteImplementacion {
 			String contrasenia = Inicio.sc.next();
 
 			for (ClienteDto c : Inicio.listaClientes) {
-				if(c.getEmail().isEmpty()) {
-					System.out.println("No existe ningun usuario");
-				}
 				if (c.getContrasenia().equals(contrasenia) && c.getEmail().equals(email)) {
 					System.out.println("Campos correctos");
 					if (c.isEsValidado() == true) {

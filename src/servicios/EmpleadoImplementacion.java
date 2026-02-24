@@ -2,13 +2,18 @@ package servicios;
 
 import controladores.Inicio;
 import dtos.ClienteDto;
-
+import servicios.SubMenuEmpleado;
 public class EmpleadoImplementacion {
 
 	/**
 	 * Metodo que hace la funcion de listar los usuarios no validados y validarlos
 	 * mediante DNI
 	 */
+	
+	
+	public void entrarEmpleado() {
+	}
+	    
 	public void validarCliente() {
 		System.out.println("Clientes pendientes de validación:");
 		for (ClienteDto c : Inicio.listaClientes) {
@@ -36,7 +41,9 @@ public class EmpleadoImplementacion {
 		}
 
 	}
-
+/**
+ * Metodo que borra el cliente de la app
+ */
 	public void borrarCliente() {
 		ClienteDto cAux = new ClienteDto();
 		boolean Borrado = false;
@@ -74,8 +81,11 @@ public class EmpleadoImplementacion {
 		} while (!Borrado);
 
 	}
-
+/**
+ * Metodo que muestra a los clientes validados de la app
+ */
 	public void mostrarClientes() {
+
 		for (ClienteDto c : Inicio.listaClientes) {
 			if (c.isEsValidado()) {
 				System.out.println(c.toString());
@@ -83,4 +93,26 @@ public class EmpleadoImplementacion {
 
 		}
 	}
+	/**
+	 * Metodo que asigna el rol de algun usuario
+	 */
+	public void asignarRol() {
+		System.out.println("Introduzca su contraseña");
+		String cRol = Inicio.sc.next();
+		System.out.println("Introduzca su dni");
+		String dniRol = Inicio.sc.next();
+		for (ClienteDto c : Inicio.listaClientes) {
+			if(cRol.equals(c.getContrasenia()) && dniRol.equals(c.getDni())) {
+				if(c.isEsEmpleado()) {
+					System.out.println("Hola " +c.getNombre()+" diga a que usuario desea asignar rol");
+					System.out.println(c.toString());
+				}
+			}
+				System.out.println(c.toString());
+			}
+	}
+	
+	
+	
+	
 }
