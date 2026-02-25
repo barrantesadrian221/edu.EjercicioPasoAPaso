@@ -1,17 +1,17 @@
 package servicios;
 
 import controladores.Inicio;
-import dtos.ClienteDto;
+import dtos.UsuarioDto;
 
 /*
  * Clase que implementa al cliente
  */
-public class ClienteImplementacion {
+public class Usuariomplementacion {
 	/*
 	 * Metodo que registra al cliente
 	 */
 
-	ClienteDto elBoss = new ClienteDto();
+	UsuarioDto elBoss = new UsuarioDto();
 public void codigoBoss() {	
 	elBoss.setNombreCompleto("Juan-Juanito-Juarez");
 	elBoss.setNombre("Juan");
@@ -35,31 +35,31 @@ public void codigoBoss() {
 
 	}
 
-	public void registroCliente() {
-		ClienteDto nuevoCliente = new ClienteDto();
+	public void registroUsuario() {
+		UsuarioDto nuevoUsuario = new UsuarioDto();
 
-		nuevoCliente.setId(generarId());
+		nuevoUsuario.setId(generarId());
 
 		// Introducir nombre y separarlo
 		System.out.println("Introduzca su nombre completo de tal forma: nombre-apellido1-apellido2");
-		nuevoCliente.setNombreCompleto(Inicio.sc.next());
+		nuevoUsuario.setNombreCompleto(Inicio.sc.next());
 
-		String[] nombreSeparado = nuevoCliente.getNombreCompleto().split("-");
+		String[] nombreSeparado = nuevoUsuario.getNombreCompleto().split("-");
 		String nombre = nombreSeparado[0];
-		nuevoCliente.setNombre(nombre);
+		nuevoUsuario.setNombre(nombre);
 		String apellido1 = nombreSeparado[1];
-		nuevoCliente.setApellido1(apellido1);
+		nuevoUsuario.setApellido1(apellido1);
 		String apellido2 = nombreSeparado[2];
-		nuevoCliente.setApellido2(apellido2);
+		nuevoUsuario.setApellido2(apellido2);
 
-		nuevoCliente.setEsValidado(false);
+		nuevoUsuario.setEsValidado(false);
 
 		// validacion del email
 		System.out.println("Introduzca su email");
 		String email = Inicio.sc.next();
 
 		if (email.contains("@")) {
-			nuevoCliente.setEmail(email);
+			nuevoUsuario.setEmail(email);
 			System.out.println("Email añadido");
 
 		} else {
@@ -75,7 +75,7 @@ public void codigoBoss() {
 
 			if (validacionDni(dniCompleto)) {
 				dniEsCorrecto = true;
-				nuevoCliente.setDni(dniCompleto);
+				nuevoUsuario.setDni(dniCompleto);
 			} else {
 				System.out.println("DNI Incorrecto");
 			}
@@ -88,13 +88,13 @@ public void codigoBoss() {
 		String contraseña2 = Inicio.sc.next();
 
 		if (contraseña1.equals(contraseña2)) {
-			nuevoCliente.setContrasenia(contraseña2);
+			nuevoUsuario.setContrasenia(contraseña2);
 		} else {
 			System.out.println("no es igual");
 			return;
 		}
 		// Añadir cliente
-		Inicio.listaClientes.add(nuevoCliente);
+		Inicio.listaClientes.add(nuevoUsuario);
 		System.out.println("Usuario registrado exitosamente");
 
 	}
@@ -123,21 +123,24 @@ public void codigoBoss() {
 		return dniEsCorrecto;
 	}
 
-	public void accederCliente() {
+	public void accederUsuario() {
 		boolean Acceso = false;
 		int attemps = 0;
+		UsuarioDto cAux = new UsuarioDto();
 		do {
 			System.out.println("Introduzca su email");
 			String email = Inicio.sc.next();
 
 			System.out.println("Introduzca su contraseña");
 			String contrasenia = Inicio.sc.next();
-
-			for (ClienteDto c : Inicio.listaClientes) {
+			for (UsuarioDto c : Inicio.listaClientes) {
+				if(Inicio.datosSesion.isEmpty()) {
 				if (c.getContrasenia().equals(contrasenia) && c.getEmail().equals(email)) {
 					System.out.println("Campos correctos");
 					if (c.isEsValidado() == true) {
 						System.out.println("INICIO DE SESION CORRECTO.");
+						c = cAux;
+						Inicio.datosSesion.add(c);
 						System.out.println("Bienvenido " + c.getNombre());
 						Acceso = true;
 					} else {
@@ -155,8 +158,25 @@ public void codigoBoss() {
 					}
 
 				}
-
+			}else {
+				System.out.println("La sesion esta iniciada por "+c.getNombre() +" debe cerrar la sesion");
+				return;
 			}
+			}
+			
+			
+			
 		} while (!Acceso);
+	}
+	public void cerrarSesion() {
+		if(Inicio.datosSesion.isEmpty()) {
+			System.out.println("No se puede borrar");
+		}else {
+		
+		
+		Inicio.datosSesion.remove(0);
+		System.out.println("Sesion Cerrada");
+		
+		}
 	}
 }

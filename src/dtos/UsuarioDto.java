@@ -1,6 +1,6 @@
 package dtos;
 
-public class ClienteDto {
+public class UsuarioDto {
 	
 	
 	private String dni;

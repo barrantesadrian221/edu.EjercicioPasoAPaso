@@ -3,26 +3,26 @@ package controladores;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import dtos.ClienteDto;
-import servicios.ClienteImplementacion;
+import dtos.UsuarioDto;
+import servicios.Usuariomplementacion;
 import servicios.EmpleadoImplementacion;
 import servicios.MenuImplementacion;
-import servicios.SubMenuCliente;
+import servicios.SubMenuUsuario;
 import servicios.SubMenuEmpleado;
 
 public class Inicio {
 	public static Scanner sc = new Scanner(System.in);
-	public static ArrayList <ClienteDto>listaClientes = new ArrayList<>();
-	public static ArrayList <ClienteDto>listaEmpleado = new ArrayList<>();
-
+	public static ArrayList <UsuarioDto>listaClientes = new ArrayList<>();
+	public static ArrayList <UsuarioDto>listaEmpleado = new ArrayList<>();
+	public static ArrayList <UsuarioDto>datosSesion = new ArrayList<>();
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		EmpleadoImplementacion ei = new EmpleadoImplementacion();
-		ClienteImplementacion ci = new ClienteImplementacion();
+		Usuariomplementacion ci = new Usuariomplementacion();
 		MenuImplementacion mi = new MenuImplementacion();
 		SubMenuEmpleado sme = new SubMenuEmpleado();
-		SubMenuCliente smc = new SubMenuCliente();
+		SubMenuUsuario smc = new SubMenuUsuario();
 		boolean esCerrado = false;
 		byte opcionInicial;
 		ci.codigoBoss();
@@ -46,6 +46,10 @@ public class Inicio {
 				smc.accionarMenuCliente();
 				break;
 				
+			case 3:
+				ci.cerrarSesion();
+				break;
+				
 			default:
 				System.out.println("No existe la opcion");
 			
@@ -58,5 +62,4 @@ public class Inicio {
 		
 		sc.close();
 	}
-
 }

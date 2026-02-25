@@ -1,7 +1,12 @@
 package servicios;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import controladores.Inicio;
-import dtos.ClienteDto;
+import dtos.UsuarioDto;
 import servicios.SubMenuEmpleado;
 public class EmpleadoImplementacion {
 
@@ -14,8 +19,8 @@ public class EmpleadoImplementacion {
 	public void entrarEmpleado() {
 		System.out.println("Introduzca su contraseña");
 		String contra = Inicio.sc.next();
-		ClienteDto ceAux = new ClienteDto();
-		for (ClienteDto ce : Inicio.listaEmpleado) {
+		UsuarioDto ceAux = new UsuarioDto();
+		for (UsuarioDto ce : Inicio.listaEmpleado) {
 			if(contra.equals(ce.getContrasenia())) {
 				ceAux = ce;
 				break;
@@ -34,7 +39,7 @@ public class EmpleadoImplementacion {
 	    
 	public void validarCliente() {
 		System.out.println("Clientes pendientes de validación:");
-		for (ClienteDto c : Inicio.listaClientes) {
+		for (UsuarioDto c : Inicio.listaClientes) {
 			if (!c.isEsValidado()) {
 				System.out.println(c.toString());
 			}
@@ -45,7 +50,7 @@ public class EmpleadoImplementacion {
 		String dniIntroducido = Inicio.sc.next();
 		boolean usuarioExistente = false;
 		// Comprueba si algun usuario tiene dicho dni
-		for (ClienteDto c : Inicio.listaClientes) {
+		for (UsuarioDto c : Inicio.listaClientes) {
 			if (c.getDni().equals(dniIntroducido)) {
 				c.setEsValidado(true);
 				System.out.println("Usuario validado");
@@ -63,7 +68,7 @@ public class EmpleadoImplementacion {
  * Metodo que borra el cliente de la app
  */
 	public void borrarCliente() {
-		ClienteDto cAux = new ClienteDto();
+		UsuarioDto cAux = new UsuarioDto();
 		boolean Borrado = false;
 		
 		
@@ -75,8 +80,8 @@ public class EmpleadoImplementacion {
 		do {
 			System.out.println("Introduzca el dni de la persona a eliminar");
 			String dni = Inicio.sc.next();
-			if(ClienteImplementacion.validacionDni(dni)) {
-			for (ClienteDto c : Inicio.listaClientes) {
+			if(Usuariomplementacion.validacionDni(dni)) {
+			for (UsuarioDto c : Inicio.listaClientes) {
 				c.getDni();
 				if (c.getDni().equals(dni)) {
 					System.out.println("Todo pasado");
@@ -103,48 +108,98 @@ public class EmpleadoImplementacion {
  * Metodo que muestra a los clientes validados de la app
  */
 	public void mostrarClientes() {
+System.out.println("¿De que manera los quiere mostrar? Ascendente(ponga A) o descendente (ponga D)");
+String resultado = Inicio.sc.next();
 
-		for (ClienteDto c : Inicio.listaClientes) {
+if(resultado.equals("A")) {
+	mostrarAscendente();
+
+}else if(resultado.equals("D")){
+mostrarDescendente();	
+}else {
+	System.out.println("Valor incorrecto");
+}
+
+
+	
+
+
+		for (UsuarioDto c : Inicio.listaClientes) {
 			if (c.isEsValidado()) {
 				System.out.println(c.toString());
 			}
 
 		}
 	}
+	
+	public void mostrarAscendente() {
+		List<UsuarioDto> listaOrdenada = new ArrayList<>(Inicio.listaClientes);
+		listaOrdenada.sort(Comparator.comparing(UsuarioDto::getApellido1));
+		System.out.println(listaOrdenada.toString());
+		}
+		
+	public void mostrarDescendente() {
+		List<UsuarioDto> listaOrdenada = new ArrayList<>(Inicio.listaClientes);
+		
+		listaOrdenada.sort(Comparator.comparing(UsuarioDto::getApellido1).reversed());
+		System.out.println(listaOrdenada.toString());
+	}
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Metodo que asigna el rol de algun usuario
 	 */
 	public void asignarRol() {
 		boolean cerrarAsignar = false;
-		ClienteDto cAux = new ClienteDto();
 		do {
-			for ( ClienteDto cc : Inicio.listaClientes) {
+			for ( UsuarioDto cc : Inicio.listaClientes) {
 				System.out.println("LISTA CLIENTES");
 				System.out.println(cc.toString());
+				}
 				System.out.println("Introduzca el dni del que quiere cambiar de rol");
 				String dni = Inicio.sc.next();
-				if(dni.equals(cc.getDni())) {
-					Inicio.listaClientes.remove(cc);
-					cc.setEsEmpleado(true);
-					Inicio.listaEmpleado.add(cc);
+				for(UsuarioDto cAux : Inicio.listaClientes) {
+				if(dni.equals(cAux.getDni())) {
+					Inicio.listaClientes.remove(cAux);
+					cAux.setEsEmpleado(true);
+					Inicio.listaEmpleado.add(cAux);
 					System.out.println("Usuario cambiado correctamente");
 					cerrarAsignar=true;
 					
-					break;
+				
 					
 				}else {
 					System.out.println("No se encontro a dicha persona");
 					cerrarAsignar=true;	
 				}
 				
-			}
+				}
 			
 		}while(!cerrarAsignar);
 	 
 	}
 	
 	public void listarEmpleadoPrueba() {
-		for(ClienteDto ce : Inicio.listaEmpleado) {
+		for(UsuarioDto ce : Inicio.listaEmpleado) {
 			System.out.println(ce.toString());
 		}
 		

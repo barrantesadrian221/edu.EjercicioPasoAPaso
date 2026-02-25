@@ -2,7 +2,7 @@ package servicios;
 
 import controladores.Inicio;
 
-public class SubMenuCliente implements MenuInterfaz {
+public class SubMenuUsuario implements MenuInterfaz {
 
 	@Override
 	public void mostrarMenu() {
@@ -30,7 +30,7 @@ public class SubMenuCliente implements MenuInterfaz {
 	}
 	
 	public void accionarMenuCliente() {
-		ClienteImplementacion ci = new ClienteImplementacion();
+		Usuariomplementacion ci = new Usuariomplementacion();
 		boolean esCerradoSubCl = false;
 		byte opcionCl;
 		
@@ -46,12 +46,12 @@ public class SubMenuCliente implements MenuInterfaz {
 			break;
 			
 		case 1:
-			ci.registroCliente();
+			ci.registroUsuario();
 			esCerradoSubCl = true;
 			break;
 			
 		case 2:
-			ci.accederCliente();
+			ci.accederUsuario();
 			esCerradoSubCl = true;
 		break;
 	
