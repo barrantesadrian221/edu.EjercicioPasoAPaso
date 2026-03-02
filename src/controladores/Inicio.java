@@ -1,5 +1,6 @@
 package controladores;
 
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,13 +10,19 @@ import servicios.EmpleadoImplementacion;
 import servicios.MenuImplementacion;
 import servicios.SubMenuUsuario;
 import servicios.SubMenuEmpleado;
-
+/**
+ * Clase Inicial de la aplicacion
+ */
 public class Inicio {
 	public static Scanner sc = new Scanner(System.in);
 	public static ArrayList <UsuarioDto>listaClientes = new ArrayList<>();
 	public static ArrayList <UsuarioDto>listaEmpleado = new ArrayList<>();
 	public static ArrayList <UsuarioDto>datosSesion = new ArrayList<>();
-
+/**
+ * 
+ * @param args
+ * Metodo Principal que controla  la aplicacion
+ */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		EmpleadoImplementacion ei = new EmpleadoImplementacion();

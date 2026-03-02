@@ -8,14 +8,18 @@ import java.util.List;
 import controladores.Inicio;
 import dtos.UsuarioDto;
 import servicios.SubMenuEmpleado;
+
+/**
+ * Clase que implementa al empleado y sus funciones
+ */
+
 public class EmpleadoImplementacion {
 
+	
+	
 	/**
-	 * Metodo que hace la funcion de listar los usuarios no validados y validarlos
-	 * mediante DNI
+	 * Metodo que unicamente deja entrar en empleado a los empleados
 	 */
-	
-	
 	public void entrarEmpleado() {
 		System.out.println("Introduzca su contraseña");
 		String contra = Inicio.sc.next();
@@ -36,7 +40,9 @@ public class EmpleadoImplementacion {
 	
 	
 	}
-	    
+	    /**
+	     * Metodo en el que un empleado valida un cliente
+	     */
 	public void validarCliente() {
 		System.out.println("Clientes pendientes de validación:");
 		for (UsuarioDto c : Inicio.listaClientes) {

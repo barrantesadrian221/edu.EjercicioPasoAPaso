@@ -1,5 +1,7 @@
 package servicios;
 
+import java.io.FileWriter;
+
 import controladores.Inicio;
 import dtos.UsuarioDto;
 
@@ -12,7 +14,11 @@ public class Usuariomplementacion {
 	 */
 
 	UsuarioDto elBoss = new UsuarioDto();
-public void codigoBoss() {	
+
+	/**
+	 * Metodo de un jefe generado automaticamente
+	 */
+	public void codigoBoss() {	
 	elBoss.setNombreCompleto("Juan-Juanito-Juarez");
 	elBoss.setNombre("Juan");
 	elBoss.setApellido1("Juanito");
@@ -34,7 +40,9 @@ public void codigoBoss() {
 		return generarId + 1;
 
 	}
-
+	/**
+	 * Metodo que registra al cliente
+	 */
 	public void registroUsuario() {
 		UsuarioDto nuevoUsuario = new UsuarioDto();
 
@@ -96,7 +104,13 @@ public void codigoBoss() {
 		// Añadir cliente
 		Inicio.listaClientes.add(nuevoUsuario);
 		System.out.println("Usuario registrado exitosamente");
-
+		try {
+			FileWriter fichero = new FileWriter("impre.txt", true);
+			fichero.write(nuevoUsuario.getNombre() + "\n");
+			fichero.close();
+			}catch(Exception e) {
+				System.out.println("fallo garrafal");
+			};
 	}
 
 	// Asegurarse de que el dni es correcto
@@ -122,7 +136,9 @@ public void codigoBoss() {
 			}
 		return dniEsCorrecto;
 	}
-
+/**
+ * Metodo en el cual un usuario registrado se puede loguear
+ */
 	public void accederUsuario() {
 		boolean Acceso = false;
 		int attemps = 0;
@@ -168,6 +184,9 @@ public void codigoBoss() {
 			
 		} while (!Acceso);
 	}
+	/**
+	 * Metodo en el que un usuario puede cerrar sesion
+	 */
 	public void cerrarSesion() {
 		if(Inicio.datosSesion.isEmpty()) {
 			System.out.println("No se puede borrar");
