@@ -1,6 +1,11 @@
 package controladores;
 
 import java.io.FileWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,63 +15,121 @@ import servicios.EmpleadoImplementacion;
 import servicios.MenuImplementacion;
 import servicios.SubMenuUsuario;
 import servicios.SubMenuEmpleado;
+
 /**
  * Clase Inicial de la aplicacion
  */
 public class Inicio {
 	public static Scanner sc = new Scanner(System.in);
-	public static ArrayList <UsuarioDto>listaClientes = new ArrayList<>();
-	public static ArrayList <UsuarioDto>listaEmpleado = new ArrayList<>();
-	public static ArrayList <UsuarioDto>datosSesion = new ArrayList<>();
-/**
- * 
- * @param args
- * Metodo Principal que controla  la aplicacion
- */
+
+	public static ArrayList<UsuarioDto> listaClientes = new ArrayList<>();
+	public static ArrayList<UsuarioDto> listaEmpleado = new ArrayList<>();
+	public static ArrayList<UsuarioDto> datosSesion = new ArrayList<>();
+
+	/**
+	 * 
+	 * @param args Metodo Principal que controla la aplicacion
+	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
 		EmpleadoImplementacion ei = new EmpleadoImplementacion();
-		Usuariomplementacion ci = new Usuariomplementacion();
+		Usuariomplementacion ui = new Usuariomplementacion();
 		MenuImplementacion mi = new MenuImplementacion();
 		SubMenuEmpleado sme = new SubMenuEmpleado();
 		SubMenuUsuario smc = new SubMenuUsuario();
+
 		boolean esCerrado = false;
 		byte opcionInicial;
-		ci.codigoBoss();
+
+		escribirLog("INFO: Aplicación iniciada.");
+
+		ui.codigoBoss();
+
 		do {
 			mi.mostrarMenu();
-			opcionInicial=mi.seleccionarOpcion();
-			switch(opcionInicial) {
-			
+			opcionInicial = mi.seleccionarOpcion();
+
+			switch (opcionInicial) {
+
 			case 0:
-				
+				escribirLog("INFO: El usuario ha solicitado cerrar el menú principal.");
 				System.out.println("Cerrando Menu");
 				esCerrado = true;
 				break;
-				
+
 			case 1:
-				ei.entrarEmpleado();
-				sme.accionarMenuEmpleado();
+				escribirLog("INFO: Intento de acceso a la versión empleado.");
+				if (ei.entrarEmpleado()) {
+					escribirLog("INFO: Acceso concedido a empleado.");
+					sme.accionarMenuEmpleado();
+				} else {
+					escribirLog("WARN: Acceso denegado a empleado.");
+				}
 				break;
-				
+
 			case 2:
+				escribirLog("INFO: El usuario ha entrado en la versión cliente.");
 				smc.accionarMenuCliente();
 				break;
-				
+
 			case 3:
-				ci.cerrarSesion();
+				escribirLog("INFO: El usuario ha solicitado cerrar sesión.");
+				ui.cerrarSesion();
 				break;
-				
+
 			default:
+				escribirLog("WARN: Opción no válida introducida: " + opcionInicial);
 				System.out.println("No existe la opcion");
-			
-			
-			
+				break;
 			}
-		}while(!esCerrado);
-		
-		
-		
+
+		} while (!esCerrado);
+
+		// --- EL ÚLTIMO PASO: REVISAR LAS 50 LINEAS ANTES DE CERRAR ---
+		System.out.println("Revisando registros del sistema...");
+
+		// 1. Buscamos todos los archivos en la carpeta del proyecto
+		File carpeta = new File(".");
+		File[] listaArchivos = carpeta.listFiles();
+
+		if (listaArchivos != null) {
+			for (File archivo : listaArchivos) {
+				// 2. Si es un archivo de texto (.txt), contamos sus líneas
+				if (archivo.getName().endsWith(".txt")) {
+					try {
+
+						long totalLineas = Files.lines(archivo.toPath()).count();
+
+						if (totalLineas > 50) {
+							System.out.println("AVISO: El archivo " + archivo.getName() + " ha superado las 50 líneas ("
+									+ totalLineas + ").");
+							archivo.delete();
+						}
+					} catch (IOException e) {
+					}
+				}
+			}
+		}
+
+		escribirLog("INFO: Aplicación finalizada correctamente.");
+		System.out.println("Aplicación cerrada.");
 		sc.close();
+	}
+
+	/**
+	 * Escribe mensajes en el log general o en el del usuario si hay sesión activa.
+	 */
+	public static void escribirLog(String mensaje) {
+		String rutaFichero = "generalLog.txt";
+		if (!datosSesion.isEmpty()) {
+			String dniUsuario = datosSesion.get(0).getDni();
+			rutaFichero = dniUsuario + "log.txt";
+		}
+
+		try (PrintWriter pw = new PrintWriter(new FileWriter(rutaFichero, true))) {
+			pw.println(mensaje);
+		} catch (IOException e) {
+			System.err.println("Error al escribir en el log: " + e.getMessage());
+		}
 	}
 }

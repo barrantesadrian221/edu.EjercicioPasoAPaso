@@ -1,10 +1,8 @@
 package servicios;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import controladores.Inicio;
 import dtos.UsuarioDto;
 import servicios.SubMenuEmpleado;
@@ -12,206 +10,176 @@ import servicios.SubMenuEmpleado;
 /**
  * Clase que implementa al empleado y sus funciones
  */
-
 public class EmpleadoImplementacion {
-
 	
 	
-	/**
-	 * Metodo que unicamente deja entrar en empleado a los empleados
-	 */
-	public void entrarEmpleado() {
-		System.out.println("Introduzca su contraseña");
-		String contra = Inicio.sc.next();
-		UsuarioDto ceAux = new UsuarioDto();
-		for (UsuarioDto ce : Inicio.listaEmpleado) {
-			if(contra.equals(ce.getContrasenia())) {
-				ceAux = ce;
-				break;
-			}else {
-				System.out.println("Usted no es un empleado");
-			}
-		}
-
-		if(ceAux.isEsEmpleado()) {
-			System.out.println("Bienvenido "+ ceAux.getNombre());
-		}else {System.out.println("No es un empleado");
-		return;}
 	
 	
+	
+	
+	
+/*
+ * Metodo por el cual el empleado entra al menu de empleado
+ */
+	public boolean entrarEmpleado() { 
+	    System.out.println("Introduzca su contraseña");
+	    String contra = Inicio.sc.next();
+	    
+	    for (UsuarioDto ce : Inicio.listaEmpleado) {
+	        if (contra.equals(ce.getContrasenia())) {
+	            if (ce.isEsEmpleado()) {
+	            	System.out.println("Bienvenido " + ce.getNombre());
+	            	Inicio.escribirLog("INFO: Acceso exitoso al menú de empleado. Usuario: " + ce.getNombre());
+	                return true;
+	            }
+	        }
+	    }
+	    
+	    System.out.println("Acceso denegado.");
+	    Inicio.escribirLog("WARN: Intento de acceso fallido al menú de empleado.");
+	    return false;
 	}
-	    /**
-	     * Metodo en el que un empleado valida un cliente
-	     */
+/*
+ * Metodo que valida el cliente
+ */
 	public void validarCliente() {
-		System.out.println("Clientes pendientes de validación:");
+		System.out.println("--- Clientes pendientes de validación ---");
+		boolean hayPendientes = false;
 		for (UsuarioDto c : Inicio.listaClientes) {
 			if (!c.isEsValidado()) {
 				System.out.println(c.toString());
+				hayPendientes = true;
 			}
 		}
 
-		// Recoge el dni
+		if (!hayPendientes) {
+			System.out.println("No hay clientes esperando validación.");
+			Inicio.escribirLog("INFO: Se consultó lista de validación pero estaba vacía.");
+			return;
+		}
+
 		System.out.println("Escriba el DNI del cliente a validar:");
 		String dniIntroducido = Inicio.sc.next();
-		boolean usuarioExistente = false;
-		// Comprueba si algun usuario tiene dicho dni
+		
 		for (UsuarioDto c : Inicio.listaClientes) {
 			if (c.getDni().equals(dniIntroducido)) {
 				c.setEsValidado(true);
-				System.out.println("Usuario validado");
-				usuarioExistente = true;
+				System.out.println("Cliente " + c.getNombre() + " validado correctamente.");
+				Inicio.escribirLog("INFO: Cliente validado. DNI: " + dniIntroducido);
 				return;
 			}
 		}
 
-		if (usuarioExistente == false) {
-			System.out.println("El usuario no existe");
-		}
-
+		System.out.println("Error: El DNI introducido no coincide con ningún cliente.");
+		Inicio.escribirLog("WARN: Intento de validación fallido. DNI no encontrado: " + dniIntroducido);
 	}
 /**
- * Metodo que borra el cliente de la app
+ * Metodo para borrar cliente
  */
 	public void borrarCliente() {
-		UsuarioDto cAux = new UsuarioDto();
-		boolean Borrado = false;
+		System.out.println("Introduzca el DNI de la persona a eliminar:");
+		String dni = Inicio.sc.next();
 		
-		
-		
-		
-		
-		
-		
-		do {
-			System.out.println("Introduzca el dni de la persona a eliminar");
-			String dni = Inicio.sc.next();
-			if(Usuariomplementacion.validacionDni(dni)) {
-			for (UsuarioDto c : Inicio.listaClientes) {
-				c.getDni();
-				if (c.getDni().equals(dni)) {
-					System.out.println("Todo pasado");
-					cAux = c;
-				}
-				break;}
-			Borrado = true;
-			
-			if (!cAux.getDni().equals(dni)) {
-				System.out.println("Error: No se encuentra ningún cliente con ese DNI.");
-				
-			} else if (!cAux.isEsValidado()) {
-				System.out.println("No se puede borrar: El usuario no está validado.");
-			} else {
-				Inicio.listaClientes.remove(cAux);
-				System.out.println("Usuario " + cAux.getNombre() + " borrado exitosamente.");
-				return;
-			}
-			}
-		} while (!Borrado);
+		// Primero validamos formato del DNI
+		if (!Usuariomplementacion.validacionDni(dni)) {
+			System.out.println("El formato del DNI es incorrecto.");
+			Inicio.escribirLog("ERROR: Formato de DNI inválido en intento de borrado: " + dni);
+			return;
+		}
 
+		UsuarioDto cAux = null;
+		// Buscamos al cliente
+		for (UsuarioDto c : Inicio.listaClientes) {
+			if (c.getDni().equals(dni)) {
+				cAux = c;
+				break; 
+			}
+		}
+
+	
+		if (cAux == null) {
+			System.out.println("Error: No se encuentra ningún cliente con ese DNI.");
+			Inicio.escribirLog("WARN: Intento de borrado fallido. DNI inexistente: " + dni);
+		} else if (!cAux.isEsValidado()) {
+			System.out.println("No se puede borrar: El usuario no está validado por un empleado.");
+			Inicio.escribirLog("WARN: Intento de borrado denegado. Usuario no validado. DNI: " + dni);
+		} else {
+			Inicio.listaClientes.remove(cAux);
+			System.out.println("Usuario " + cAux.getNombre() + " borrado exitosamente.");
+			Inicio.escribirLog("INFO: Usuario eliminado del sistema. DNI: " + dni);
+		}
 	}
 /**
- * Metodo que muestra a los clientes validados de la app
+ * Metodo que muestra los clientes
  */
 	public void mostrarClientes() {
-System.out.println("¿De que manera los quiere mostrar? Ascendente(ponga A) o descendente (ponga D)");
-String resultado = Inicio.sc.next();
+		if (Inicio.listaClientes.isEmpty()) {
+			System.out.println("La lista de clientes está vacía.");
+			return;
+		}
 
-if(resultado.equals("A")) {
-	mostrarAscendente();
+		System.out.println("¿Orden Ascendente (A) o Descendente (D)?");
+		String resultado = Inicio.sc.next().toUpperCase();
 
-}else if(resultado.equals("D")){
-mostrarDescendente();	
-}else {
-	System.out.println("Valor incorrecto");
-}
+		if (resultado.equals("A")) {
+			mostrarAscendente();
+			Inicio.escribirLog("INFO: Listado de clientes mostrado en orden ascendente.");
+		} else if (resultado.equals("D")) {
+			mostrarDescendente();
+			Inicio.escribirLog("INFO: Listado de clientes mostrado en orden descendente.");
+		} else {
+			System.out.println("Opción incorrecta.");
+			Inicio.escribirLog("WARN: Opción de ordenación inválida seleccionada: " + resultado);
+		}
+	}
 
+	private void mostrarAscendente() {
+		List<UsuarioDto> copia = new ArrayList<>(Inicio.listaClientes);
+		copia.sort(Comparator.comparing(UsuarioDto::getApellido1));
+		for(UsuarioDto u : copia) System.out.println(u.toString());
+	}
 
-	
-
+	private void mostrarDescendente() {
+		List<UsuarioDto> copia = new ArrayList<>(Inicio.listaClientes);
+		copia.sort(Comparator.comparing(UsuarioDto::getApellido1).reversed());
+		for(UsuarioDto u : copia) System.out.println(u.toString());
+	}
+/**
+ * Metodo que asigna el rol (CLIENTE o EMPLEADO)
+ */
+	public void asignarRol() {
+		System.out.println("--- Cambio de Rol (Cliente a Empleado) ---");
+		System.out.println("Introduzca el DNI del usuario:");
+		String dni = Inicio.sc.next();
+		
+		UsuarioDto usuarioAEncontrar = null;
 
 		for (UsuarioDto c : Inicio.listaClientes) {
-			if (c.isEsValidado()) {
-				System.out.println(c.toString());
+			if (dni.equals(c.getDni())) {
+				usuarioAEncontrar = c;
+				break;
 			}
+		}
 
-		}
-	}
-	
-	public void mostrarAscendente() {
-		List<UsuarioDto> listaOrdenada = new ArrayList<>(Inicio.listaClientes);
-		listaOrdenada.sort(Comparator.comparing(UsuarioDto::getApellido1));
-		System.out.println(listaOrdenada.toString());
-		}
-		
-	public void mostrarDescendente() {
-		List<UsuarioDto> listaOrdenada = new ArrayList<>(Inicio.listaClientes);
-		
-		listaOrdenada.sort(Comparator.comparing(UsuarioDto::getApellido1).reversed());
-		System.out.println(listaOrdenada.toString());
-	}
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/**
-	 * Metodo que asigna el rol de algun usuario
-	 */
-	public void asignarRol() {
-		boolean cerrarAsignar = false;
-		do {
-			for ( UsuarioDto cc : Inicio.listaClientes) {
-				System.out.println("LISTA CLIENTES");
-				System.out.println(cc.toString());
-				}
-				System.out.println("Introduzca el dni del que quiere cambiar de rol");
-				String dni = Inicio.sc.next();
-				for(UsuarioDto cAux : Inicio.listaClientes) {
-				if(dni.equals(cAux.getDni())) {
-					Inicio.listaClientes.remove(cAux);
-					cAux.setEsEmpleado(true);
-					Inicio.listaEmpleado.add(cAux);
-					System.out.println("Usuario cambiado correctamente");
-					cerrarAsignar=true;
-					
-				
-					
-				}else {
-					System.out.println("No se encontro a dicha persona");
-					cerrarAsignar=true;	
-				}
-				
-				}
+		if (usuarioAEncontrar != null) {
+			// Lo quitamos de una lista y lo pasamos a la otra
+			Inicio.listaClientes.remove(usuarioAEncontrar);
+			usuarioAEncontrar.setEsEmpleado(true);
+			Inicio.listaEmpleado.add(usuarioAEncontrar);
 			
-		}while(!cerrarAsignar);
-	 
+			System.out.println("Rol actualizado: " + usuarioAEncontrar.getNombre() + " ahora es empleado.");
+			Inicio.escribirLog("INFO: Cambio de ROL exitoso. DNI: " + dni);
+		} else {
+			System.out.println("No se encontró a ninguna persona con ese DNI.");
+			Inicio.escribirLog("WARN: Fallo al asignar ROL. DNI no encontrado: " + dni);
+		}
 	}
-	
+
 	public void listarEmpleadoPrueba() {
-		for(UsuarioDto ce : Inicio.listaEmpleado) {
+		System.out.println("--- Lista de Empleados en el Sistema ---");
+		for (UsuarioDto ce : Inicio.listaEmpleado) {
 			System.out.println(ce.toString());
 		}
-		
+		Inicio.escribirLog("INFO: Se ha listado la plantilla de empleados por consola.");
 	}
-	
-	
-	
-	
 }

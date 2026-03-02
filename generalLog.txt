@@ -1,0 +1,65 @@
+INFO: Aplicación iniciada.
+INFO: Usuario Administrador (Boss) cargado en el sistema.
+INFO: Intento de acceso a la versión empleado.
+WARN: Intento de acceso fallido al menú de empleado.
+WARN: Acceso denegado a empleado.
+INFO: El usuario ha entrado en la versión cliente.
+INFO: Aplicación iniciada.
+INFO: Usuario Administrador (Boss) cargado en el sistema.
+INFO: Intento de acceso a la versión empleado.
+WARN: Intento de acceso fallido al menú de empleado.
+WARN: Acceso denegado a empleado.
+INFO: El usuario ha entrado en la versión cliente.
+INFO: Email registrado: @
+WARN: DNI introducido incorrecto en registro.
+WARN: DNI introducido incorrecto en registro.
+WARN: DNI introducido incorrecto en registro.
+WARN: DNI introducido incorrecto en registro.
+WARN: DNI introducido incorrecto en registro.
+WARN: DNI introducido incorrecto en registro.
+WARN: DNI introducido incorrecto en registro.
+WARN: DNI introducido incorrecto en registro.
+WARN: DNI introducido incorrecto en registro.
+WARN: DNI introducido incorrecto en registro.
+INFO: Nuevo usuario registrado con éxito. DNI: 30277696-J
+INFO: El usuario ha entrado en la versión cliente.
+WARN: Intento de acceso de cuenta no validada: @
+INFO: Intento de acceso a la versión empleado.
+INFO: Acceso exitoso al menú de empleado. Usuario: Juan
+INFO: Acceso concedido a empleado.
+INFO: Cliente validado. DNI: 30277696-J
+INFO: El usuario ha entrado en la versión cliente.
+INFO: Sesión cerrada por el usuario: a
+INFO: El usuario ha entrado en la versión cliente.
+INFO: Email registrado: @@@@
+INFO: Nuevo usuario registrado con éxito. DNI: 99999999-R
+INFO: El usuario ha solicitado cerrar el menú principal.
+INFO: Aplicación finalizada correctamente.
+INFO: Aplicación iniciada.
+INFO: El usuario ha solicitado cerrar el menú principal.
+INFO: Aplicación finalizada correctamente.
+INFO: Aplicación iniciada.
+INFO: Intento de acceso a la versión empleado.
+WARN: Intento de acceso fallido al menú de empleado.
+WARN: Acceso denegado a empleado.
+INFO: El usuario ha entrado en la versión cliente.
+INFO: Email registrado: @@
+INFO: Nuevo usuario registrado con éxito. DNI: 30285619-R
+INFO: Intento de acceso a la versión empleado.
+INFO: Acceso exitoso al menú de empleado. Usuario: Juan
+INFO: Acceso concedido a empleado.
+INFO: Cliente validado. DNI: 30285619-R
+INFO: El usuario ha entrado en la versión cliente.
+INFO: Sesión cerrada por el usuario: impre
+INFO: El usuario ha entrado en la versión cliente.
+INFO: Email registrado: @
+INFO: Nuevo usuario registrado con éxito. DNI: 30277696-J
+INFO: Intento de acceso a la versión empleado.
+INFO: Acceso exitoso al menú de empleado. Usuario: Juan
+INFO: Acceso concedido a empleado.
+WARN: Intento de validación fallido. DNI no encontrado: 3027796-J
+INFO: El usuario ha entrado en la versión cliente.
+WARN: Intento de acceso de cuenta no validada: @
+INFO: Aplicación iniciada.
+INFO: El usuario ha solicitado cerrar el menú principal.
+INFO: Aplicación finalizada correctamente.

@@ -12,6 +12,7 @@ public class MenuImplementacion implements MenuInterfaz {
 		System.out.println("0.Cerrar app");
 		System.out.println("1.Version empleado");
 		System.out.println("2.Version cliente");
+		System.out.println("3.Cerrar Sesion");
 		System.out.println("---------");
 	
 	}

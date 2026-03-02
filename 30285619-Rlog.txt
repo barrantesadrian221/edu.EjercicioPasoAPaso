@@ -1,0 +1,2 @@
+INFO: Sesión iniciada correctamente por: @@
+INFO: El usuario ha solicitado cerrar sesión.
