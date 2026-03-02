@@ -1,5 +1,8 @@
 package controladores;
 
+import java.io.FileWriter;
+import java.io.PrintWriter; // Añadido para facilitar la escritura
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,49 +20,74 @@ public class Inicio {
 	public static ArrayList <UsuarioDto>datosSesion = new ArrayList<>();
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		EmpleadoImplementacion ei = new EmpleadoImplementacion();
 		Usuariomplementacion ci = new Usuariomplementacion();
 		MenuImplementacion mi = new MenuImplementacion();
 		SubMenuEmpleado sme = new SubMenuEmpleado();
 		SubMenuUsuario smc = new SubMenuUsuario();
+		
 		boolean esCerrado = false;
 		byte opcionInicial;
+		
+		// Registro inicial del sistema
+		escribirLog("INFO: Aplicación iniciada.");
+		
 		ci.codigoBoss();
+		
 		do {
 			mi.mostrarMenu();
-			opcionInicial=mi.seleccionarOpcion();
+			opcionInicial = mi.seleccionarOpcion();
+			
 			switch(opcionInicial) {
 			
 			case 0:
-				
+				escribirLog("INFO: El usuario ha solicitado cerrar el menú principal.");
 				System.out.println("Cerrando Menu");
 				esCerrado = true;
 				break;
 				
 			case 1:
-				ei.entrarEmpleado();
-				sme.accionarMenuEmpleado();
-				break;
+				escribirLog("INFO: Intento de acceso a la versión empleado.");
+				if (ei.entrarEmpleado()) {
+					escribirLog("INFO: Acceso concedido a empleado.");
+			        sme.accionarMenuEmpleado();
+				} else {
+					escribirLog("WARN: Acceso denegado a empleado.");
+				}
+				break; // Corregido: El break ahora está fuera del IF para evitar que salte al case 2
 				
 			case 2:
+				escribirLog("INFO: El usuario ha entrado en la versión cliente.");
 				smc.accionarMenuCliente();
 				break;
 				
 			case 3:
+				escribirLog("INFO: El usuario ha solicitado cerrar sesión.");
 				ci.cerrarSesion();
 				break;
 				
 			default:
+				escribirLog("WARN: Opción no válida introducida: " + opcionInicial);
 				System.out.println("No existe la opcion");
-			
-			
-			
+				break;
 			}
-		}while(!esCerrado);
+			
+		} while(!esCerrado);
 		
-		
-		
+		escribirLog("INFO: Aplicación finalizada correctamente.");
 		sc.close();
+	}
+
+	/**
+	 * MÉTODO PARA ESCRIBIR EN EL LOG
+	 * Se puede llamar desde cualquier clase usando Inicio.escribirLog("mensaje")
+	 */
+	public static void escribirLog(String mensaje) {
+		try (PrintWriter pw = new PrintWriter(new FileWriter("generalLog.txt", true))) {
+			pw.println(mensaje);
+		} catch (IOException e) {
+			System.err.println("Error al escribir en el log: " + e.getMessage());
+		}
 	}
 }

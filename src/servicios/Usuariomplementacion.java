@@ -3,180 +3,176 @@ package servicios;
 import controladores.Inicio;
 import dtos.UsuarioDto;
 
-/*
- * Clase que implementa al cliente
+/**
+ * Clase que gestiona la lógica de los usuarios (clientes)
+ * Incluye registro, validación de DNI, acceso y gestión de sesión.
  */
 public class Usuariomplementacion {
-	/*
-	 * Metodo que registra al cliente
+
+	/**
+	 * Crea un usuario administrador por defecto (Boss) al iniciar la app
 	 */
-
-	UsuarioDto elBoss = new UsuarioDto();
-public void codigoBoss() {	
-	elBoss.setNombreCompleto("Juan-Juanito-Juarez");
-	elBoss.setNombre("Juan");
-	elBoss.setApellido1("Juanito");
-	elBoss.setApellido2("Juarez");
-	elBoss.setContrasenia("impre");
-	elBoss.setDni("63620204-L");
-	elBoss.setEsEmpleado(true);
-	elBoss.setEsValidado(true);
-	elBoss.setEmail("@@.com");
-	Inicio.listaEmpleado.add(elBoss);
-}
-	private long generarId() {
-		long generarId = 0;
-
-		if (!Inicio.listaClientes.isEmpty()) {
-			generarId = Inicio.listaClientes.getLast().getId();
-
-		}
-		return generarId + 1;
-
+	public void codigoBoss() {
+		UsuarioDto elBoss = new UsuarioDto();
+		elBoss.setNombreCompleto("Juan-Juanito-Juarez");
+		elBoss.setNombre("Juan");
+		elBoss.setApellido1("Juanito");
+		elBoss.setApellido2("Juarez");
+		elBoss.setContrasenia("impre");
+		elBoss.setDni("63620204-L");
+		elBoss.setEsEmpleado(true);
+		elBoss.setEsValidado(true);
+		elBoss.setEmail("@@.com");
+		Inicio.listaEmpleado.add(elBoss);
+		
+		Inicio.escribirLog("INFO: Usuario Administrador (Boss) cargado en el sistema.");
 	}
 
+	/**
+	 * Calcula el siguiente ID disponible basándose en el último cliente de la lista
+	 * @return el nuevo ID de tipo long
+	 */
+	private long generarId() {
+		long generarId = 0;
+		if (!Inicio.listaClientes.isEmpty()) {
+			generarId = Inicio.listaClientes.getLast().getId();
+		}
+		return generarId + 1;
+	}
+
+	/**
+	 * Gestiona el formulario de registro de un nuevo cliente
+	 */
 	public void registroUsuario() {
 		UsuarioDto nuevoUsuario = new UsuarioDto();
-
 		nuevoUsuario.setId(generarId());
 
-		// Introducir nombre y separarlo
-		System.out.println("Introduzca su nombre completo de tal forma: nombre-apellido1-apellido2");
+		// Nombre completo y split
+		System.out.println("Introduzca su nombre completo (nombre-apellido1-apellido2):");
 		nuevoUsuario.setNombreCompleto(Inicio.sc.next());
 
 		String[] nombreSeparado = nuevoUsuario.getNombreCompleto().split("-");
-		String nombre = nombreSeparado[0];
-		nuevoUsuario.setNombre(nombre);
-		String apellido1 = nombreSeparado[1];
-		nuevoUsuario.setApellido1(apellido1);
-		String apellido2 = nombreSeparado[2];
-		nuevoUsuario.setApellido2(apellido2);
+		nuevoUsuario.setNombre(nombreSeparado[0]);
+		nuevoUsuario.setApellido1(nombreSeparado[1]);
+		nuevoUsuario.setApellido2(nombreSeparado[2]);
 
 		nuevoUsuario.setEsValidado(false);
 
-		// validacion del email
-		System.out.println("Introduzca su email");
+		// Validación Email
+		System.out.println("Introduzca su email:");
 		String email = Inicio.sc.next();
-
 		if (email.contains("@")) {
 			nuevoUsuario.setEmail(email);
-			System.out.println("Email añadido");
-
+			Inicio.escribirLog("INFO: Email registrado: " + email);
 		} else {
-			System.out.println("No existe ese email");
+			System.out.println("Error: Formato de email no válido.");
+			Inicio.escribirLog("ERROR: Intento de registro con email inválido: " + email);
 			return;
 		}
 
+		// Validación DNI con bucle
 		boolean dniEsCorrecto = false;
 		do {
-			
-			System.out.println("Introduzca su dni de esta forma: 12345678-X");
+			System.out.println("Introduzca su DNI (12345678-X):");
 			String dniCompleto = Inicio.sc.next();
-
 			if (validacionDni(dniCompleto)) {
 				dniEsCorrecto = true;
 				nuevoUsuario.setDni(dniCompleto);
 			} else {
-				System.out.println("DNI Incorrecto");
+				System.out.println("DNI incorrecto, inténtelo de nuevo.");
+				Inicio.escribirLog("WARN: DNI introducido incorrecto en registro.");
 			}
 		} while (!dniEsCorrecto);
 
-		// Validar contraseña
-		System.out.println("Introduzca su contraseña");
-		String contraseña1 = Inicio.sc.next();
-		System.out.println("Valide la contraseña");
-		String contraseña2 = Inicio.sc.next();
+		// Validación Contraseña
+		System.out.println("Introduzca su contraseña:");
+		String contra1 = Inicio.sc.next();
+		System.out.println("Repita la contraseña:");
+		String contra2 = Inicio.sc.next();
 
-		if (contraseña1.equals(contraseña2)) {
-			nuevoUsuario.setContrasenia(contraseña2);
+		if (contra1.equals(contra2)) {
+			nuevoUsuario.setContrasenia(contra2);
+			Inicio.listaClientes.add(nuevoUsuario);
+			System.out.println("Usuario registrado exitosamente. Espere a ser validado.");
+			Inicio.escribirLog("INFO: Nuevo usuario registrado con éxito. DNI: " + nuevoUsuario.getDni());
 		} else {
-			System.out.println("no es igual");
-			return;
+			System.out.println("Error: Las contraseñas no coinciden.");
+			Inicio.escribirLog("ERROR: Fallo en registro: las contraseñas no coincidían.");
 		}
-		// Añadir cliente
-		Inicio.listaClientes.add(nuevoUsuario);
-		System.out.println("Usuario registrado exitosamente");
-
 	}
 
-	// Asegurarse de que el dni es correcto
+	/**
+	 * Comprueba si un DNI es real calculando su letra
+	 * @param dniCompleto el DNI con formato 12345678-X
+	 * @return true si el formato y la letra son correctos
+	 */
 	public static boolean validacionDni(String dniCompleto) {
-		boolean dniEsCorrecto = false;
 		if (!dniCompleto.matches("^[0-9]{8}-[A-Z]$")) {
 			return false;
 		}
-			String[] catalogo = { "T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q",
-					"V", "H", "L", "C", "K", "E" };
+		
+		String[] catalogo = { "T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E" };
+		String[] dniSeparado = dniCompleto.split("-");
+		int dniNumerico = Integer.parseInt(dniSeparado[0]);
+		String dniLetra = dniSeparado[1].toUpperCase();
 
-			String[] dniSeparado = dniCompleto.split("-");
-			int dniNumerico = Integer.parseInt(dniSeparado[0]);
-			String dniLetra = dniSeparado[1].toUpperCase();
-
-			int posicion = dniNumerico % 23;
-			String letraCorrecta = catalogo[posicion];
-
-			if (dniLetra.equalsIgnoreCase(letraCorrecta)) {
-				System.out.println("DNI correcto");
-				dniEsCorrecto = true;
-
-			}
-		return dniEsCorrecto;
+		int posicion = dniNumerico % 23;
+		return dniLetra.equals(catalogo[posicion]);
 	}
 
+	/**
+	 * Gestiona el inicio de sesión del cliente comprobando credenciales y estado de validación
+	 */
 	public void accederUsuario() {
-		boolean Acceso = false;
-		int attemps = 0;
-		UsuarioDto cAux = new UsuarioDto();
+		if (!Inicio.datosSesion.isEmpty()) {
+			System.out.println("Ya hay una sesión iniciada. Ciérrela primero.");
+			Inicio.escribirLog("WARN: Intento de acceso con sesión ya activa.");
+			return;
+		}
+
+		int intentos = 0;
 		do {
-			System.out.println("Introduzca su email");
+			System.out.println("Email:");
 			String email = Inicio.sc.next();
-
-			System.out.println("Introduzca su contraseña");
+			System.out.println("Contraseña:");
 			String contrasenia = Inicio.sc.next();
+
 			for (UsuarioDto c : Inicio.listaClientes) {
-				if(Inicio.datosSesion.isEmpty()) {
 				if (c.getContrasenia().equals(contrasenia) && c.getEmail().equals(email)) {
-					System.out.println("Campos correctos");
-					if (c.isEsValidado() == true) {
-						System.out.println("INICIO DE SESION CORRECTO.");
-						c = cAux;
-						Inicio.datosSesion.add(c);
+					if (c.isEsValidado()) {
 						System.out.println("Bienvenido " + c.getNombre());
-						Acceso = true;
+						Inicio.datosSesion.add(c); // Guardamos el usuario en sesión
+						Inicio.escribirLog("INFO: Sesión iniciada correctamente por: " + email);
+						return;
 					} else {
-						System.out.println("Asegurese de que un empleado cualificado le haya validado");
+						System.out.println("Su cuenta aún no ha sido validada por un empleado.");
+						Inicio.escribirLog("WARN: Intento de acceso de cuenta no validada: " + email);
 						return;
 					}
-
-				} else {
-					System.out.println("No son correctos vuelva a intentarlo");
-					attemps++;
-					if (attemps == 3) {
-						System.out.println("Intentos maximos alcanzados");
-						return;
-
-					}
-
 				}
-			}else {
-				System.out.println("La sesion esta iniciada por "+c.getNombre() +" debe cerrar la sesion");
-				return;
 			}
-			}
-			
-			
-			
-		} while (!Acceso);
+
+			intentos++;
+			System.out.println("Credenciales incorrectas. Intento " + intentos + " de 3.");
+			Inicio.escribirLog("WARN: Fallo de login. Email: " + email + ". Intento: " + intentos);
+
+		} while (intentos < 3);
+
+		System.out.println("Has agotado los intentos.");
 	}
+
+	/**
+	 * Elimina el usuario de la lista de sesión activa
+	 */
 	public void cerrarSesion() {
-		if(Inicio.datosSesion.isEmpty()) {
-			System.out.println("No se puede borrar");
-		}else {
-		
-		
-		Inicio.datosSesion.remove(0);
-		System.out.println("Sesion Cerrada");
-		
+		if (Inicio.datosSesion.isEmpty()) {
+			System.out.println("No hay ninguna sesión activa que cerrar.");
+			Inicio.escribirLog("WARN: Intento de cierre de sesión sin haber ninguna activa.");
+		} else {
+			String nombre = Inicio.datosSesion.get(0).getNombre();
+			Inicio.datosSesion.remove(0);
+			System.out.println("Sesión cerrada correctamente. ¡Adiós!");
+			Inicio.escribirLog("INFO: Sesión cerrada por el usuario: " + nombre);
 		}
 	}
 }
