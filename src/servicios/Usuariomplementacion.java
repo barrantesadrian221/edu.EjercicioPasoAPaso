@@ -104,15 +104,7 @@ public class Usuariomplementacion {
 		// Añadir cliente
 		Inicio.listaClientes.add(nuevoUsuario);
 		System.out.println("Usuario registrado exitosamente");
-		try {
-			FileWriter fichero = new FileWriter("impre.txt", true);
-			fichero.write(nuevoUsuario.getNombre() + "\n");
-			fichero.close();
-			}catch(Exception e) {
-				System.out.println("fallo garrafal");
-			};
 	}
-
 	// Asegurarse de que el dni es correcto
 	public static boolean validacionDni(String dniCompleto) {
 		boolean dniEsCorrecto = false;
