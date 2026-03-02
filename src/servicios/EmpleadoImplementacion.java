@@ -7,7 +7,9 @@ import controladores.Inicio;
 import dtos.UsuarioDto;
 
 public class EmpleadoImplementacion {
-
+/*
+ * Metodo por el cual el empleado entra al menu de empleado
+ */
 	public boolean entrarEmpleado() { 
 	    System.out.println("Introduzca su contraseña");
 	    String contra = Inicio.sc.next();
@@ -26,7 +28,9 @@ public class EmpleadoImplementacion {
 	    Inicio.escribirLog("WARN: Intento de acceso fallido al menú de empleado.");
 	    return false;
 	}
-
+/*
+ * Metodo que valida el cliente
+ */
 	public void validarCliente() {
 		System.out.println("--- Clientes pendientes de validación ---");
 		boolean hayPendientes = false;
@@ -58,7 +62,9 @@ public class EmpleadoImplementacion {
 		System.out.println("Error: El DNI introducido no coincide con ningún cliente.");
 		Inicio.escribirLog("WARN: Intento de validación fallido. DNI no encontrado: " + dniIntroducido);
 	}
-
+/**
+ * Metodo para borrar cliente
+ */
 	public void borrarCliente() {
 		System.out.println("Introduzca el DNI de la persona a eliminar:");
 		String dni = Inicio.sc.next();
@@ -75,11 +81,11 @@ public class EmpleadoImplementacion {
 		for (UsuarioDto c : Inicio.listaClientes) {
 			if (c.getDni().equals(dni)) {
 				cAux = c;
-				break; // IMPORTANTE: El break va DENTRO del IF
+				break; 
 			}
 		}
 
-		// Evaluamos el resultado de la búsqueda
+	
 		if (cAux == null) {
 			System.out.println("Error: No se encuentra ningún cliente con ese DNI.");
 			Inicio.escribirLog("WARN: Intento de borrado fallido. DNI inexistente: " + dni);
@@ -92,7 +98,9 @@ public class EmpleadoImplementacion {
 			Inicio.escribirLog("INFO: Usuario eliminado del sistema. DNI: " + dni);
 		}
 	}
-
+/**
+ * Metodo que muestra los clientes
+ */
 	public void mostrarClientes() {
 		if (Inicio.listaClientes.isEmpty()) {
 			System.out.println("La lista de clientes está vacía.");
@@ -125,7 +133,9 @@ public class EmpleadoImplementacion {
 		copia.sort(Comparator.comparing(UsuarioDto::getApellido1).reversed());
 		for(UsuarioDto u : copia) System.out.println(u.toString());
 	}
-
+/**
+ * Metodo que asigna el rol (CLIENTE o EMPLEADO)
+ */
 	public void asignarRol() {
 		System.out.println("--- Cambio de Rol (Cliente a Empleado) ---");
 		System.out.println("Introduzca el DNI del usuario:");
